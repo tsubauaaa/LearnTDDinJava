@@ -23,6 +23,12 @@ public class MovieStore {
     }
 
     public List<Movie> findByDirector(String director) {
-        return null;
+        List<Movie> result = new LinkedList<Movie>();
+        for (Movie movie: movies) {
+            if (movie.director().equals(director)) {
+                result.add(movie);
+            }
+        }
+        return result;
     }
 }
