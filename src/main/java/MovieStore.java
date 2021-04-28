@@ -7,13 +7,7 @@ public class MovieStore {
     List<Movie> movies = new LinkedList<Movie>();
 
     public List<Movie> findByPartialTitle(String partialTitle) {
-        Predicate predicate = new Predicate() {
-            @Override
-            public boolean matches(Movie movie) {
-                return movie.title().toUpperCase().contains(partialTitle.toUpperCase());
-            }
-        };
-        return findBy(predicate);
+        return findBy(movie -> movie.title().toUpperCase().contains(partialTitle.toUpperCase()));
     }
 
     private List<Movie> findBy(Predicate predicate) {
@@ -31,22 +25,11 @@ public class MovieStore {
     }
 
     public List<Movie> findByDirector(String director) {
-        Predicate predicate = new Predicate() {
-            public boolean matches(Movie movie) {
-                return movie.director().equals(director);
-            }
-        };
-        return findBy(predicate);
+        return findBy(movie -> movie.director().equals(director));
     }
 
     public List<Movie> findByReleaseYear(int from, int to) {
-        Predicate predicate = new Predicate() {
-            @Override
-            public boolean matches(Movie movie) {
-                return movie.releaseYear() > from && movie.releaseYear() < to;
-            }
-        };
-        return findBy(predicate);
+        return findBy(movie -> movie.releaseYear() > from && movie.releaseYear() < to);
     }
 
     interface  Predicate{
