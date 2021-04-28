@@ -29,7 +29,7 @@ public class MovieStoreTest {
 
         List<Movie> results = movieStore.findByPartialTitle("arry");
 
-        assertThat(results.size(), is(0));
+        assertThat(results.size(), is(1));
         assertThat(results, contains(harryPotter));
     }
 }
