@@ -6,6 +6,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 
 public class MovieStoreTest {
     @Test
@@ -18,18 +19,20 @@ public class MovieStoreTest {
     }
 
     @Test
-    public void findsAMovieWhenTitleisPartiallyMatched() throws Exception {
+    public void findsAMoviesWhenTitlesArePartiallyMatched() throws Exception {
         MovieStore movieStore = new MovieStore();
         Movie harryPotter = new Movie("Harry Potter");
-        movieStore.add(harryPotter);
+        Movie starWars = new Movie("Star Wars");
+        Movie starTrek = new Movie("STAR Trek");
+
         movieStore.add(new Movie("Shawshank Redemption"));
-        movieStore.add(new Movie("Star Wars"));
-        movieStore.add(new Movie("Star Trek"));
+        movieStore.add(harryPotter);
+        movieStore.add(starWars);
+        movieStore.add(starTrek);
 
+        List<Movie> results = movieStore.findByPartialTitle("tar");
 
-        List<Movie> results = movieStore.findByPartialTitle("arry");
-
-        assertThat(results.size(), is(1));
-        assertThat(results, contains(harryPotter));
+        assertThat(results.size(), is(2));
+        assertThat(results, containsInAnyOrder(starTrek, starWars));
     }
 }
