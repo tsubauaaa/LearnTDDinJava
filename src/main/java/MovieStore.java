@@ -2,16 +2,24 @@ import model.Movie;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
-
-import static java.util.Arrays.asList;
 
 public class MovieStore {
     List<Movie> movies = new LinkedList<Movie>();
+
     public List<Movie> findByPartialTitle(String partialTitle) {
+        Predicate predicate = new Predicate() {
+            @Override
+            public boolean matches(Movie movie) {
+                return movie.title().toUpperCase().contains(partialTitle.toUpperCase());
+            }
+        };
+        return findBy(predicate);
+    }
+
+    private List<Movie> findBy(Predicate predicate) {
         List<Movie> result = new LinkedList<Movie>();
-        for (Movie movie: movies) {
-            if (movie.title().toUpperCase().contains(partialTitle.toUpperCase())) {
+        for (Movie movie : movies) {
+            if (predicate.matches(movie)) {
                 result.add(movie);
             }
         }
@@ -23,22 +31,25 @@ public class MovieStore {
     }
 
     public List<Movie> findByDirector(String director) {
-        List<Movie> result = new LinkedList<Movie>();
-        for (Movie movie: movies) {
-            if (movie.director().equals(director)) {
-                result.add(movie);
+        Predicate predicate = new Predicate() {
+            public boolean matches(Movie movie) {
+                return movie.director().equals(director);
             }
-        }
-        return result;
+        };
+        return findBy(predicate);
     }
 
     public List<Movie> findByReleaseYear(int from, int to) {
-        List<Movie> result = new LinkedList<Movie>();
-        for (Movie movie: movies) {
-            if (movie.releaseYear() > from && movie.releaseYear() < to) {
-                result.add(movie);
+        Predicate predicate = new Predicate() {
+            @Override
+            public boolean matches(Movie movie) {
+                return movie.releaseYear() > from && movie.releaseYear() < to;
             }
-        }
-        return result;
+        };
+        return findBy(predicate);
+    }
+
+    interface  Predicate{
+        boolean matches(Movie movie);
     }
 }
