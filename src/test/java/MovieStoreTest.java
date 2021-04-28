@@ -1,4 +1,5 @@
 import model.Movie;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -9,6 +10,12 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 
 public class MovieStoreTest {
+
+    private final Movie harryPotter = new Movie("Harry Potter");
+    private final Movie starWars = new Movie("Star Wars");
+    private final Movie starTrek = new Movie("STAR Trek");
+    private final MovieStore movieStore = new MovieStore();
+
     @Test
     public void returnsNoResultsWhenNoTitlesPartiallyMatchSearch() throws Exception {
         MovieStore movieStore = new MovieStore();
@@ -17,19 +24,15 @@ public class MovieStoreTest {
 
         assertThat(results.size(), is(0));
     }
-
-    @Test
-    public void findsAMoviesWhenTitlesArePartiallyMatched() throws Exception {
-        MovieStore movieStore = new MovieStore();
-        Movie harryPotter = new Movie("Harry Potter");
-        Movie starWars = new Movie("Star Wars");
-        Movie starTrek = new Movie("STAR Trek");
-
+    @Before
+    public void setUp() throws Exception {
         movieStore.add(new Movie("Shawshank Redemption"));
         movieStore.add(harryPotter);
         movieStore.add(starWars);
         movieStore.add(starTrek);
-
+    }
+    @Test
+    public void findsAMoviesWhenTitlesArePartiallyMatched() throws Exception {
         List<Movie> results = movieStore.findByPartialTitle("tar");
 
         assertThat(results.size(), is(2));
