@@ -11,10 +11,20 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 
 public class MovieStoreTest {
 
+    private final MovieStore movieStore = new MovieStore();
     private final Movie harryPotter = new Movie("Harry Potter");
     private final Movie starWars = new Movie("Star Wars");
     private final Movie starTrek = new Movie("STAR Trek");
-    private final MovieStore movieStore = new MovieStore();
+    private final Movie shawShank = new Movie("Shawshank Redemption");
+
+    @Before
+    public void setUp() throws Exception {
+        movieStore.add(shawShank);
+        movieStore.add(harryPotter);
+        movieStore.add(harryPotter);
+        movieStore.add(starWars);
+        movieStore.add(starTrek);
+    }
 
     @Test
     public void returnsNoResultsWhenNoTitlesPartiallyMatchSearch() throws Exception {
@@ -24,16 +34,16 @@ public class MovieStoreTest {
 
         assertThat(results.size(), is(0));
     }
-    @Before
-    public void setUp() throws Exception {
-        movieStore.add(new Movie("Shawshank Redemption"));
-        movieStore.add(harryPotter);
-        movieStore.add(starWars);
-        movieStore.add(starTrek);
+    @Test
+    public void findsMoviesWhenTitlesArePartiallyMatchedCaseInsensitive() throws Exception {
+        List<Movie> results = movieStore.findByPartialTitle("tar");
+
+        assertThat(results.size(), is(2));
+        assertThat(results, containsInAnyOrder(starTrek, starWars));
     }
     @Test
-    public void findsAMoviesWhenTitlesArePartiallyMatched() throws Exception {
-        List<Movie> results = movieStore.findByPartialTitle("tar");
+    public void findsMoviesWhenDirectorExactlyMatches() throws Exception {
+        List<Movie> results = movieStore.findByDirector("Shwimmer");
 
         assertThat(results.size(), is(2));
         assertThat(results, containsInAnyOrder(starTrek, starWars));
