@@ -8,4 +8,7 @@ public class MovieStore {
 
         return new LinkedList<Movie>();
     }
+
+    public void add(Movie movie) {
+    }
 }
