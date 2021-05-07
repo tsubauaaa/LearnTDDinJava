@@ -9,6 +9,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 
+// Req: Returns no results when no titles partially match search case insensitive
+// Req: Finds a movie when title is partially matched
+// Req: Finds movies when director exactly matches
+// Req: Finds movies when release year is between two values
+
 public class MovieStoreTest {
 
     private final MovieStore movieStore = new MovieStore();
